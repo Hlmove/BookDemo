@@ -1,24 +1,32 @@
+#内置端口
 server:
   port: 8888
 
 spring:
+  #使用Swagger的时候注释掉@Configuration会报错，加上这个不报错
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
   datasource:
+    #阿里druid连接池
     druid:
       driver-class-name: com.mysql.cj.jdbc.Driver
       url: jdbc:mysql://localhost:3306/db-book?characterEncoding=utf-8&serverTimezone=Asia/Shanghai&allowMultiQueries=true
       username: book
       password: book
-
+#Mybatis的配置
 mybatis:
+  #pojo包取别名
   type-aliases-package: com.briup.pojo
+  #扫描mapper类的xml文件
   mapper-locations: classpath:mappers/**/*.xml
   configuration:
+    #开启驼峰命名映射
     map-underscore-to-camel-case: true
+    #Mybatis的日志开启
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
-    #swagger配置
+
+#swagger配置
 #swagger:
 #  enabled: true
 #  title: 网上书城服务
