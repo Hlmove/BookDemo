@@ -1,0 +1,34 @@
+server:
+  port: 8888
+
+spring:
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+  datasource:
+    druid:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      url: jdbc:mysql://localhost:3306/db-book?characterEncoding=utf-8&serverTimezone=Asia/Shanghai&allowMultiQueries=true
+      username: book
+      password: book
+
+mybatis:
+  type-aliases-package: com.briup.pojo
+  mapper-locations: classpath:mappers/**/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    #swagger配置
+#swagger:
+#  enabled: true
+#  title: 网上书城服务
+#  description: estore服务api
+#  version: 1.0
+#  contact:
+#    name: hlmove
+#    email: hlmove@briup.com
+#  base-package: com.briup.controller
+#  authorization:
+#    key-name: Authorization
+
+

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.briup.dao.BookDao">
+
+    <resultMap id="BaseResultMap" type="book">
+        <id property="id" column="id" jdbcType="INTEGER"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+        <result property="description" column="description" jdbcType="VARCHAR"/>
+        <result property="author" column="author" jdbcType="VARCHAR"/>
+        <result property="publisher" column="publisher" jdbcType="VARCHAR"/>
+        <result property="price" column="price" jdbcType="DOUBLE"/>
+        <result property="storeNum" column="store_num" jdbcType="INTEGER"/>
+        <result property="status" column="status" jdbcType="TINYINT"/>
+        <result property="categoryId" column="category_id" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, name, description, author, publisher,
+        price, store_num, status, category_id
+    </sql>
+    <!--添加图书信息-->
+    <insert id="insertBook">
+        insert into es_book(name, description, author, publisher,
+                            price, store_num, category_id)
+        values (#{name}, #{description}, #{author}, #{publisher},
+                #{price}, #{storeNum}, #{categoryId})
+    </insert>
+    <!--修改图书信息-->
+    <update id="updateBook">
+        update es_book
+        <set>
+            <if test="name != null and name != ''">
+                name = #{name},
+            </if>
+            <if test="description != null and description != ''">
+                description = #{description},
+            </if>
+            <if test="author != null and author != ''">
+                author = #{author},
+            </if>
+            <if test="publisher != null and publisher != ''">
+                publisher = #{publisher},
+            </if>
+            <if test="price != null and price != ''">
+                price = #{price},
+            </if>
+            <!--复制的内容有问题，应该判断的是传入的storeNum，此处没有映射的说法-->
+            <if test="storeNum != null and storeNum != ''">
+                store_num = #{storeNum},
+            </if>
+            <if test="categoryId != null and categoryId != ''">
+                category_id = #{categoryId}
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+    <update id="updateBookStatus">
+        update es_book
+        set status = #{status}
+        where id = #{id}
+    </update>
+    <delete id="deleteBookById">
+        delete
+        from es_book
+        where id = #{id}
+    </delete>
+    <delete id="deleteBookByIds">
+        delete from es_book
+        where id in
+        <foreach collection="ids" item="id" open="(" close=")"
+                 separator=",">
+            #{id}
+        </foreach>
+    </delete>
+    <!--根据id查询图书信息-->
+    <select id="selectBookById" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from es_book
+        where id = #{id}
+    </select>
+
+</mapper>
