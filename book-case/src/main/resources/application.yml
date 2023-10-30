@@ -35,7 +35,7 @@ mybatis:
 #  contact:
 #    name: hlmove
 #    email: hlmove@briup.com
-#  base-package: com.briup.controller
+#  base-package: com.briup.controller   #代码生成文档包
 #  authorization:
 #    key-name: Authorization
 

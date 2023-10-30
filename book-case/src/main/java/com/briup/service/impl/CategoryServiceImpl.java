@@ -3,7 +3,7 @@ package com.briup.service.impl;
 import com.briup.dao.extend.CategoryExtendDao;
 import com.briup.pojo.extend.CategoryExtend;
 import com.briup.service.CategoryService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,10 +12,11 @@ import java.util.List;
  * @author Hlmove
  */
 @Service
+@RequiredArgsConstructor
 public class CategoryServiceImpl implements CategoryService {
 
-    @Autowired
-    private CategoryExtendDao categoryExtendDao;
+    private final CategoryExtendDao categoryExtendDao;
+
 
     @Override
     public List<CategoryExtend> getAllCategories() {

@@ -11,7 +11,7 @@ import com.briup.result.ResultCode;
 import com.briup.service.BookService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -21,16 +21,15 @@ import java.util.List;
  * @author Hlmove
  */
 @Service
+@RequiredArgsConstructor
 public class BookServiceImpl implements BookService {
 
-    @Autowired
-    private BookExtendDao bookExtendDao;
+    private final BookExtendDao bookExtendDao;
 
-    @Autowired
-    private BookDao bookDao;
+    private final BookDao bookDao;
     //需要判断2级类别是否存在，所以特别引入
-    @Autowired
-    private CategoryDao categoryDao;
+    private final CategoryDao categoryDao;
+
 
     @Override
     public List<BookExtend> getBooksByCondition(String keyword, Integer categoryId) {

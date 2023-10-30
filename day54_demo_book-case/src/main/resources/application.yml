@@ -17,7 +17,7 @@ spring:
 #Mybatis的配置
 mybatis:
     #pojo包取别名
-    type-aliases-package: com.briup.pojo
+    type-aliases-package: com.hlmove.demo_bookcase.pojo
     #扫描mapper类的xml文件
     mapper-locations: classpath:mappers/**/*.xml
     configuration:

@@ -9,7 +9,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,9 +20,11 @@ import java.util.List;
 @Api(tags = "图书管理相关接口")
 @RestController
 @RequestMapping("/books")
+@RequiredArgsConstructor
+@CrossOrigin
 public class BookController {
-    @Autowired
-    private BookService bookService;
+    private final BookService bookService;
+
 
 //    //条件查询所有书籍
 //    @ApiOperation(value = "条件查询图书信息", notes = "采用自定义PageBean实现")
@@ -55,8 +57,8 @@ public class BookController {
 //        return Result.success(pageBean);
 //    }
 
-        //插件实现分页查询
-    @ApiOperation(value = "条件分页查询图书信息", notes = "采用自定义PageBean实现")
+    //插件实现分页查询
+    @ApiOperation(value = "条件分页查询图书信息", notes = "采用pageHelper实现")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "keyword", value = "搜索关键字（书名/作者/出版社）", paramType = "query"),
             @ApiImplicitParam(name = "categoryId", value = "搜索图书所属分类编号", paramType = "query"),
@@ -64,13 +66,16 @@ public class BookController {
             @ApiImplicitParam(name = "pageSize", value = "每页数据条数", required = true, paramType = "query")
     })
     @GetMapping("/page")
-    private Result getByPageAndCondition(String keyword, Integer categoryId, Integer pageNum, Integer pageSize) {
+    private Result getByPageAndCondition(String keyword, Integer categoryId,
+                                         @RequestParam(defaultValue = "1") Integer pageNum,
+                                         @RequestParam(defaultValue = "5") Integer pageSize) {
         PageInfo<BookExtend> pageInfo =
                 bookService.getBooksByConditionAndPage(keyword, categoryId, pageNum, pageSize);
         return Result.success(pageInfo);
     }
+
     //新增图书
-//接收前端页面传递的json对象，需要使用@RequestBody注解
+    //接收前端页面传递的json对象，需要使用@RequestBody注解
     @ApiOperation(value = "添加图书信息", notes = "图书名称、作者、出版社不能为空")
     @PostMapping
     public Result add(@RequestBody Book book) {
@@ -78,6 +83,7 @@ public class BookController {
         return Result.success("添加书籍成功");
     }
 
+    //回显数据在修改上
     @ApiOperation(value = "根据id查询图书信息", notes = "id不能为 null")
     @ApiImplicitParam(name = "id", value = "图书编号", required = true, paramType = "path")
     @GetMapping("/{id}")
@@ -95,7 +101,7 @@ public class BookController {
     @ApiOperation(value = "修改图书状态")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "id", value = "图书编号", paramType = "query"),
-            @ApiImplicitParam(name = "status", value = "修改的状 态", paramType = " query")
+            @ApiImplicitParam(name = "status", value = "修改的状 态", paramType = "query")
     })
     @PutMapping("/{id}/{status}")
     public Result modifyStatus(@PathVariable Integer id,

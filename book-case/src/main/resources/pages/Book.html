@@ -45,6 +45,7 @@
 
                                     <el-col :span="6">
                                         <el-form-item label="分类">
+                                            <br/>
                                             <el-cascader :options="categories" :props="{ value: 'id', label: 'name' }"
                                                 @change="handleSearchChange" v-model="categoryId"
                                                 :show-all-levels="false" placeholder="请选择图书分类" clearable></el-cascader>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hlmove.demo_bookcase.dao.extend.CategoryExtendDao">
+    <!-- 自定义resultMap, 继承基础分类的BaseResultMap -->
+    <resultMap id="CategoryExtendResultMap"
+               extends="com.hlmove.demo_bookcase.dao.CategoryDao.BaseResultMap"
+               type="categoryExtend">
+        <!-- 一对多嵌套结果映射 -->
+        <collection property="children" ofType="category">
+            <id property="id" column="cid" jdbcType="INTEGER"/>
+            <result property="name" column="cname" jdbcType="VARCHAR"/>
+            <result property="description" column="cdescription" jdbcType="VARCHAR"/>
+            <result property="parentId" column="cparentId" jdbcType="VARCHAR"/>
+        </collection>
+    </resultMap>
+    <sql id="Base_Column_List">
+        c1.id, c1.name, c1.description,c1.parent_id,
+        c2.id cid, c2.name cname, c2.description cdescription,
+        c2.parent_id cparentId
+    </sql>
+    <!--c1为1级分类表 c2为2级分类表-->
+    <select id="selectAllCategories" resultMap="CategoryExtendResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from es_category c1 left join es_category c2
+        on c1.id = c2.parent_id
+        where c1.parent_id is null
+    </select>
+</mapper>
